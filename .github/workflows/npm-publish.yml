@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 16
       - run: npm ci
-      - run: npm test
+      - run: npm i typescript
 
   publish-npm:
     needs: build
@@ -27,7 +27,6 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
-      - run: npm i typescript
       - run: tsc
       - run: npm ci
       - run: npm publish
