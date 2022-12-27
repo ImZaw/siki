@@ -7,6 +7,9 @@
   "files": ["/dist"],
   "prepublish": "tsc",
   "keywords": ["siki", "fastify"],
+  "scripts": {
+	  "test": "node ."
+  },
   "devDependencies": {
     "@types/node": "^18.11.17",
     "typescript": "^4.9.4"
