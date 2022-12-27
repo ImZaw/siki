@@ -3,13 +3,19 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
         globalThis.providers.push(providerClass)
         const newProviderClass = new providerClass()
         globalThis.app.register((instance, opts, next) => {
-			instance.get("/", async (request, reply) => {
+            instance.get("/", async (request, reply) => {
+                var hostUrl = request.protocol + '://' + request.hostname + "/" + newProviderClass.name.toLowerCase()
                 try {
                     reply.code(200).send({
                         "status": 200,
-                        "result": {"name": newProviderClass.name, "language": newProviderClass.language, "url": newProviderClass.mainUrl }
+                        "result": { 
+                            "name": newProviderClass.name, 
+                            "language": newProviderClass.language, 
+                            "url": newProviderClass.mainUrl,
+                            "home": hostUrl + "/home"
+                        }
                     })
-                } catch(err) {
+                } catch (err) {
                     reply.code(500).send({
                         "status": 500,
                         "message": err.message
@@ -22,12 +28,12 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
                     var response = await newProviderClass.homePage()
                     reply.code(200).send({
                         "status": 200,
-                        "result": response.map(value=> {
-                            value.posts = value.posts.map(obj=> Object.assign(obj, { nextApi: hostUrl + "/load?url="+obj.url }))
+                        "result": response.map(value => {
+                            value.posts = value.posts.map(obj => Object.assign(obj, { nextApi: hostUrl + "/load?url=" + obj.url }))
                             return value
                         })
                     })
-                } catch(err) {
+                } catch (err) {
                     reply.code(500).send({
                         "status": 500,
                         "message": err.message
@@ -38,15 +44,15 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
                 var hostUrl = request.protocol + '://' + request.hostname + "/" + newProviderClass.name.toLowerCase()
                 try {
                     var query = request.query.q
-                    if(!query || query.length <= 0) throw new Error("`q` is required");
+                    if (!query || query.length <= 0) throw new Error("`q` is required");
                     var response = await newProviderClass.search(query)
                     reply.code(200).send({
                         "status": 200,
-                        "result": response.map(value=> 
-                            Object.assign(value, { nextApi: hostUrl + "/load?url="+value.url })
+                        "result": response.map(value =>
+                            Object.assign(value, { nextApi: hostUrl + "/load?url=" + value.url })
                         )
                     })
-                } catch(err) {
+                } catch (err) {
                     reply.code(500).send({
                         "status": 500,
                         "message": err.message
@@ -57,19 +63,19 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
                 var hostUrl = request.protocol + '://' + request.hostname + "/" + newProviderClass.name.toLowerCase()
                 try {
                     var url = request.query.url
-                    if(!url || url.length <= 0) throw new Error("`url` is required");
+                    if (!url || url.length <= 0) throw new Error("`url` is required");
                     new URL(url)
                     var response = await newProviderClass.load(url)
-                    if(response.episodes != undefined) {
-                        response.episodes = response.episodes.map(value=> Object.assign(value, { nextApi: hostUrl + "/loadMedia?url="+value.url }))
+                    if (response.episodes != undefined) {
+                        response.episodes = response.episodes.map(value => Object.assign(value, { nextApi: hostUrl + "/loadMedia?url=" + value.url }))
                     } else {
-                        response = Object.assign(response, { nextApi: hostUrl + "/loadMedia?url="+response.url })
+                        response = Object.assign(response, { nextApi: hostUrl + "/loadMedia?url=" + response.url })
                     }
                     reply.code(200).send({
                         "status": 200,
                         "result": response
                     })
-                } catch(err) {                
+                } catch (err) {
                     reply.code(500).send({
                         "status": 500,
                         "message": err.message
@@ -79,14 +85,14 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
             instance.get("/loadMedia", async (request, reply) => {
                 try {
                     var url = request.query.url
-                    if(!url || url.length <= 0) throw new Error("`url` is required");
+                    if (!url || url.length <= 0) throw new Error("`url` is required");
                     new URL(url)
                     var response = await newProviderClass.loadLinks(url)
                     reply.code(200).send({
                         "status": 200,
                         "result": response
                     })
-                } catch(err) {
+                } catch (err) {
                     reply.code(500).send({
                         "status": 500,
                         "message": err.message
@@ -94,10 +100,10 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
                 }
             })
             next()
-        }, { prefix: newProviderClass.name.toLowerCase() })      
+        }, { prefix: newProviderClass.name.toLowerCase() })
         console.log(`${newProviderClass.name} is public now.`)
         return true
-    } catch(err) {        
+    } catch (err) {
         console.log(err);
         return false
     }

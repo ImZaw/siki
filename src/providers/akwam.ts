@@ -3,8 +3,8 @@ const cheerio = require("cheerio");
 import * as convert from "../utils/globalFunctions"
 
 axios.interceptors.request.use(config => {
-	config.headers['Accept-Encoding'] = 'null';
-	return config;
+    config.headers['Accept-Encoding'] = 'null';
+    return config;
 });
 export default class AkwamProvider implements ProviderClass {
     name = "Akwam";
@@ -13,21 +13,21 @@ export default class AkwamProvider implements ProviderClass {
 
     async homePage() {
         return await Promise.all([
-            {"title": "Movies", "url": `${this.mainUrl}/movies`}, 
-            {"title": "Series", "url": `${this.mainUrl}/series`}
-        ].map(async json=> {
+            { "title": "Movies", "url": `${this.mainUrl}/movies` },
+            { "title": "Series", "url": `${this.mainUrl}/series` }
+        ].map(async json => {
             var request = await axios.get(json.url)
             var $ = cheerio.load(request.data)
             var posts = $("div[class=\"col-lg-auto col-md-4 col-6 mb-12\"]").map((index, element) => {
                 var post = $(element)
                 let titleElement = post.find("h3.entry-title > a")
                 return convert.searchResponse(
-                    titleElement.text(), 
-                    (json.title == "Movies"), 
+                    titleElement.text(),
+                    (json.title == "Movies"),
                     titleElement.attr("href"),
                     post.find("div.entry-image > picture > img").attr("src"),
                     Number(post.find("div[class=\"font-size-16 text-white mt-2\"]:contains(السنة)").text().replace(/\D/g, ''))
-                    )
+                )
             })
             return convert.HomePage(json.title, posts.toArray())
         }))
@@ -38,14 +38,14 @@ export default class AkwamProvider implements ProviderClass {
         return $("div[class=\"col-lg-auto col-md-4 col-6 mb-12\"]").map((index, element) => {
             var post = $(element)
             let titleElement = post.find("h3.entry-title > a")
-            if(!/\/movie\/|\/series\//.test(titleElement.attr("href"))) return null;
+            if (!/\/movie\/|\/series\//.test(titleElement.attr("href"))) return null;
             return convert.searchResponse(
-                titleElement.text(), 
-                titleElement.attr("href").includes("/movie/"), 
+                titleElement.text(),
+                titleElement.attr("href").includes("/movie/"),
                 titleElement.attr("href"),
                 post.find("div.entry-image > picture > img").attr("src"),
                 post.find("span[class=\"badge badge-pill badge-secondary ml-1\"]").text()
-                )
+            )
         }).toArray()
     }
     async load(url: string): Promise<movieInterface | seriesInterface> {
@@ -56,7 +56,7 @@ export default class AkwamProvider implements ProviderClass {
         var year = Number($("div[class=\"font-size-16 text-white mt-2\"]:contains(السنة)").text().replace(/.*:| /g, ""))
         var posterUrl = $("picture > img.img-fluid").first().attr("src")
         var trailer = $("a[class='btn btn-light btn-pill d-flex align-items-center']").attr("href")
-        if(/movie/.test(url)) {
+        if (/movie/.test(url)) {
             return convert.movieResponse(title, url, posterUrl, year, plot, trailer)
         } else {
             var episodes = $("div.row > div[class='bg-primary2 p-4 col-lg-4 col-md-6 col-12']").map((index, element) => {
@@ -71,7 +71,7 @@ export default class AkwamProvider implements ProviderClass {
                     null
                 )
             })
-            return convert.seriesResponse(title, url, posterUrl, year, plot, trailer, episodes.toArray().sort(function(a, b) { return a.episode < b.episode; }))
+            return convert.seriesResponse(title, url, posterUrl, year, plot, trailer, episodes.toArray().sort(function (a, b) { return a.episode < b.episode; }))
         }
     }
     async loadLinks(data: any): Promise<Array<mediaLink>> {
@@ -83,11 +83,11 @@ export default class AkwamProvider implements ProviderClass {
         $ = cheerio.load(iframeRequest.data)
         var sources = $("source").map((index, element) => {
             return convert.mediaLink(
-                $(element).attr("src"), 
-                $(element).attr("size"), 
-                [{"Referer": this.mainUrl}], 
+                $(element).attr("src"),
+                $(element).attr("size"),
+                [{ "Referer": this.mainUrl }],
                 $(element).attr("src").includes(".m3u8")
-                )
+            )
         })
         return sources.toArray()
     }

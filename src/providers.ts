@@ -11,14 +11,16 @@ module.exports = async function attachApi(fastifyApp) {
         })
     })
     globalThis.app.get("/current-providers", (req, res) => {
-        res.send(globalThis.providers.map(c=>{
+        res.send(globalThis.providers.map(c => {
             var cc = new c()
-            return {name: cc.name, language: cc.language}
+            return { name: cc.name, language: cc.language }
         }))
     })
     globalThis.app.get("/routes", async (request, reply) => {
         reply.send(globalThis.app.printRoutes())
     })
+    // Register providers here.
     await registerApi(akwam)
-	return globalThis.app
+    // -----------------------
+    return globalThis.app
 }
