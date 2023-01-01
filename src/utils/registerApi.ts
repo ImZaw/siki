@@ -67,9 +67,9 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
                     new URL(url)
                     var response = await newProviderClass.load(url)
                     if (response.episodes != undefined) {
-                        response.episodes = response.episodes.map(value => Object.assign(value, { nextApi: hostUrl + "/loadMedia?url=" + value.url }))
+                        response.episodes = response.episodes.map(value => Object.assign(value, { nextApi: hostUrl + "/loadLinks?data=" + value.url }))
                     } else {
-                        response = Object.assign(response, { nextApi: hostUrl + "/loadMedia?url=" + response.url })
+                        response = Object.assign(response, { nextApi: hostUrl + "/loadLinks?data=" + response.url })
                     }
                     reply.code(200).send({
                         "status": 200,
@@ -82,12 +82,11 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
                     })
                 }
             })
-            instance.get("/loadMedia", async (request, reply) => {
+            instance.get("/loadLinks", async (request, reply) => {
                 try {
-                    var url = request.query.url
-                    if (!url || url.length <= 0) throw new Error("`url` is required");
-                    new URL(url)
-                    var response = await newProviderClass.loadLinks(url)
+                    var data = request.query.data
+                    if (!data || data.length <= 0) throw new Error("`data` is required");
+                    var response = await newProviderClass.loadLinks(data)
                     reply.code(200).send({
                         "status": 200,
                         "result": response
@@ -101,7 +100,6 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
             })
             next()
         }, { prefix: newProviderClass.name.toLowerCase() })
-        console.log(`${newProviderClass.name} is public now.`)
         return true
     } catch (err) {
         console.log(err);

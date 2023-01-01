@@ -1,6 +1,13 @@
 export { };
 
 declare global {
+    interface SikiClass {
+        provider_name: string,
+        homePage(): Promise<Array<homeInterface>>,
+        search(query: string): Promise<Array<searchInterface>>,
+        load(url: string): Promise<movieInterface | seriesInterface>,
+        loadLinks(data: any): Promise<Array<mediaLink>>
+    }
     interface ProviderClass {
         name: string,
         mainUrl: string,

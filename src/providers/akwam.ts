@@ -1,6 +1,6 @@
 const axios = require("axios")
 const cheerio = require("cheerio");
-import * as convert from "../utils/globalFunctions"
+import * as convert from "../utils/convertFunctions"
 
 axios.interceptors.request.use(config => {
     config.headers['Accept-Encoding'] = 'null';
