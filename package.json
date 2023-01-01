@@ -13,7 +13,8 @@
     "fastify"
   ],
   "devDependencies": {
-    "@types/node": "^18.11.17",
+    "@types/node": "^18.11.18",
+    "tslib": "^2.4.1",
     "typescript": "^4.9.4"
   },
   "repository": {

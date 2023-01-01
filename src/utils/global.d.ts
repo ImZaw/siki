@@ -27,6 +27,7 @@ declare global {
         url: string,
         posterUrl: string,
         year: Number,
+        rating: Number,
     }
     interface movieInterface {
         name: string,

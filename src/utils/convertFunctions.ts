@@ -9,9 +9,10 @@ export function searchResponse(
     isMovie: boolean,
     url: string,
     posterUrl: string,
-    year: Number
+    year: Number,
+    rating: Number
 ): searchInterface {
-    return { name, isMovie, url, posterUrl, year }
+    return { name, isMovie, url, posterUrl, year, rating }
 }
 export function movieResponse(
     name: string,

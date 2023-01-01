@@ -8,7 +8,6 @@ export async function attachApi(fastifyApp) {
     globalThis.app.get("/", async (request, reply) => {
         reply.send({
             "message": "Hello!",
-            "author": "Zo#2966",
             "url": request.protocol + '://' + request.hostname
         })
     })
@@ -31,19 +30,35 @@ export class Siki implements SikiClass {
     providerClass: any;
     constructor(provider_name: string) {
         this.provider_name = provider_name
-        var providerRequire = require("./src/providers/" + this.provider_name + ".js").default;
+        var providerRequire = require("./src/providers/" + this.provider_name).default;
         this.providerClass = new providerRequire()
     }
     async homePage(): Promise<homeInterface[]> {
-        return await this.providerClass.homePage()
+        try {
+            return await this.providerClass.homePage()
+        } catch(err) {
+            return err.message
+        }
     }
     async search(query: string): Promise<searchInterface[]> {
-        return await this.providerClass.search(query)
+        try {
+            return await this.providerClass.search(query)
+        } catch(err) {
+            return err.message
+        }
     }
     async load(url: string): Promise<movieInterface | seriesInterface> {
-        return await this.providerClass.load(url)
+        try {
+            return await this.providerClass.load(url)
+        } catch(err) {
+            return err.message
+        }
     }
     async loadLinks(data: any): Promise<mediaLink[]> {
-        return await this.providerClass.loadLinks(data)
+        try {
+            return await this.providerClass.loadLinks(data)
+        } catch(err) {
+            return err.message
+        }
     }
 }
