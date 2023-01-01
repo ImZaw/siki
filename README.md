@@ -1,11 +1,11 @@
 
-# Fastify siki
+# Siki
 
-Provides you with movies/tvseries information in specific routes
+Provides you with movies/tvseries information in specific routes or using functions!
 # Usage
-### Using it in nodejs
+## Using it in nodejs
 ```javascript
-const { Siki } = require("fastify-siki");
+const { Siki } = require("siki");
 
 (async()=> {
     const siki = new Siki("akwam")
