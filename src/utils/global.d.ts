@@ -54,6 +54,7 @@ declare global {
         episodes: Array<episodeInterface>
     }
     interface mediaLink {
+        name: string,
         raw: string,
         quality: Number,
         headers: Array<Object>,

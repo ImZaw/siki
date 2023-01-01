@@ -83,6 +83,7 @@ export default class AkwamProvider implements ProviderClass {
         $ = cheerio.load(iframeRequest.data)
         var sources = $("source").map((index, element) => {
             return convert.mediaLink(
+                "Akwam",
                 $(element).attr("src"),
                 $(element).attr("size"),
                 [{ "Referer": this.mainUrl }],

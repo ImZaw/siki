@@ -45,10 +45,11 @@ export function seriesResponse(
     return { name, url, posterUrl, year, plot, trailer, episodes }
 }
 export function mediaLink(
+    name: string,
     raw: string,
     quality: Number,
     headers: Array<Object>,
     m3u8: boolean,
 ): mediaLink {
-    return { raw, quality, headers, m3u8 }
+    return { name, raw, quality, headers, m3u8 }
 }
