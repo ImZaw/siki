@@ -25,7 +25,7 @@ export default class AkwamProvider implements ProviderClass {
                     titleElement.text(),
                     (json.title == "Movies"),
                     titleElement.attr("href"),
-                    post.find("div.entry-image img").attr("src"),
+                    post.find("div.entry-image img").attr("data-src"),
                     parseInt(post.find("div.entry-body span.badge-secondary").text().replace(/\D/g, '')),
                     parseFloat(post.find("span.rating").text())
                 )
