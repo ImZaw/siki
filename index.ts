@@ -13,7 +13,7 @@ export async function attachApi(fastifyApp) {
     })
     globalThis.app.get("/current-providers", (req, res) => {
         res.send(globalThis.providers.map(c => {
-            var cc = new c()
+            const cc = new c()
             return { name: cc.name, language: cc.language }
         }))
     })
@@ -30,7 +30,7 @@ export class Siki implements SikiClass {
     providerClass: any;
     constructor(provider_name: string) {
         this.provider_name = provider_name
-        var providerRequire = require("./src/providers/" + this.provider_name).default;
+        const providerRequire = require("./src/providers/" + this.provider_name).default;
         this.providerClass = new providerRequire()
     }
     async homePage(): Promise<homeInterface[]> {

@@ -9,8 +9,8 @@ export function searchResponse(
     isMovie: boolean,
     url: string,
     posterUrl: string,
-    year: Number,
-    rating: Number
+    year: number,
+    rating: number
 ): searchInterface {
     return { title, isMovie, url, posterUrl, year, rating }
 }
@@ -18,7 +18,7 @@ export function movieResponse(
     title: string,
     url: string,
     posterUrl: string,
-    year: Number,
+    year: number,
     plot: string,
     trailer: string
 ): movieInterface {
@@ -27,8 +27,8 @@ export function movieResponse(
 export function Episode(
     title: string,
     url: string,
-    episode: Number,
-    season: Number,
+    episode: number,
+    season: number,
     thumbnail: string,
     plot: string,
 ): episodeInterface {
@@ -38,7 +38,7 @@ export function seriesResponse(
     title: string,
     url: string,
     posterUrl: string,
-    year: Number,
+    year: number,
     plot: string,
     trailer: string,
     episodes: Array<episodeInterface>
@@ -48,7 +48,7 @@ export function seriesResponse(
 export function mediaLink(
     title: string,
     raw: string,
-    quality: Number,
+    quality: number,
     headers: Array<Object>,
     m3u8: boolean,
 ): mediaLink {
