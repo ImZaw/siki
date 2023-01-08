@@ -26,14 +26,14 @@ declare global {
         isMovie: boolean,
         url: string,
         posterUrl: string,
-        year: Number,
-        rating: Number,
+        year: number,
+        rating: number,
     }
     interface movieInterface {
         title: string,
         url: string,
         posterUrl: string,
-        year: Number,
+        year: number,
         plot: string,
         trailer: string,
         isMovie: true
@@ -41,8 +41,8 @@ declare global {
     interface episodeInterface {
         title: string,
         url: string,
-        episode: Number,
-        season: Number,
+        episode: number,
+        season: number,
         thumbnail: string,
         plot: string,
     }
@@ -50,7 +50,7 @@ declare global {
         title: string,
         url: string,
         posterUrl: string,
-        year: Number,
+        year: number,
         plot: string,
         trailer: string,
         isMovie: false,
@@ -59,7 +59,7 @@ declare global {
     interface mediaLink {
         title: string,
         raw: string,
-        quality: Number,
+        quality: number,
         headers: Array<Object>,
         m3u8: boolean,
     }
