@@ -22,7 +22,7 @@ declare global {
         posts: Array<searchInterface>
     }
     interface searchInterface {
-        name: string,
+        title: string,
         isMovie: boolean,
         url: string,
         posterUrl: string,
@@ -30,12 +30,13 @@ declare global {
         rating: Number,
     }
     interface movieInterface {
-        name: string,
+        title: string,
         url: string,
         posterUrl: string,
         year: Number,
         plot: string,
-        trailer: string
+        trailer: string,
+        isMovie: true
     }
     interface episodeInterface {
         title: string,
@@ -46,16 +47,17 @@ declare global {
         plot: string,
     }
     interface seriesInterface {
-        name: string,
+        title: string,
         url: string,
         posterUrl: string,
         year: Number,
         plot: string,
         trailer: string,
+        isMovie: false,
         episodes: Array<episodeInterface>
     }
     interface mediaLink {
-        name: string,
+        title: string,
         raw: string,
         quality: Number,
         headers: Array<Object>,

@@ -29,14 +29,14 @@ export default class AkwamProvider implements ProviderClass {
                     parseInt(post.find("div.entry-body span.badge-secondary").text().replace(/\D/g, '')),
                     parseFloat(post.find("span.rating").text())
                 )
-            })
-            return convert.HomePage(json.title, posts.toArray())
+            }).toArray()
+            return convert.HomePage(json.title, posts)
         }))
     }
     async search(query) {
-        var request = await axios.get(`${this.mainUrl}/search?q=${query}`)
+        var request = await axios.get(`${this.mainUrl}/search?q=${query.replace(" ", "+")}`)
         var $ = cheerio.load(request.data)
-        return $("div[class=\"col-lg-auto col-md-4 col-6 mb-12\"]").map((index, element) => {
+        return $("div[class=\"widget-body row flex-wrap\"] > div").map((index, element) => {
             var post = $(element)
             let titleElement = post.find("h3.entry-title > a")
             if (!/\/movie\/|\/series\//.test(titleElement.attr("href"))) return null;
@@ -44,9 +44,9 @@ export default class AkwamProvider implements ProviderClass {
                 titleElement.text(),
                 titleElement.attr("href").includes("/movie/"),
                 titleElement.attr("href"),
-                post.find("div.entry-image > picture > img").attr("src"),
-                post.find("span[class=\"badge badge-pill badge-secondary ml-1\"]").text(),
-                null
+                post.find("div.entry-image img").attr("data-src"),
+                parseInt(post.find("div.entry-body span.badge-secondary").text().replace(/\D/g, '')),
+                parseFloat(post.find("span.rating").text())
             )
         }).toArray()
     }
@@ -91,7 +91,7 @@ export default class AkwamProvider implements ProviderClass {
                 [{ "Referer": this.mainUrl }],
                 $(element).attr("src").includes(".m3u8")
             )
-        })
-        return sources.toArray()
+        }).toArray()
+        return sources
     }
 }

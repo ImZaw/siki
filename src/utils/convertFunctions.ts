@@ -5,24 +5,24 @@ export function HomePage(
     return { title, posts }
 }
 export function searchResponse(
-    name: string,
+    title: string,
     isMovie: boolean,
     url: string,
     posterUrl: string,
     year: Number,
     rating: Number
 ): searchInterface {
-    return { name, isMovie, url, posterUrl, year, rating }
+    return { title, isMovie, url, posterUrl, year, rating }
 }
 export function movieResponse(
-    name: string,
+    title: string,
     url: string,
     posterUrl: string,
     year: Number,
     plot: string,
     trailer: string
 ): movieInterface {
-    return { name, url, posterUrl, year, plot, trailer }
+    return { title, url, posterUrl, year, plot, trailer, isMovie: true }
 }
 export function Episode(
     title: string,
@@ -35,7 +35,7 @@ export function Episode(
     return { title, url, episode, season, thumbnail, plot }
 }
 export function seriesResponse(
-    name: string,
+    title: string,
     url: string,
     posterUrl: string,
     year: Number,
@@ -43,14 +43,14 @@ export function seriesResponse(
     trailer: string,
     episodes: Array<episodeInterface>
 ): seriesInterface {
-    return { name, url, posterUrl, year, plot, trailer, episodes }
+    return { title, url, posterUrl, year, plot, trailer, isMovie: false, episodes }
 }
 export function mediaLink(
-    name: string,
+    title: string,
     raw: string,
     quality: Number,
     headers: Array<Object>,
     m3u8: boolean,
 ): mediaLink {
-    return { name, raw, quality, headers, m3u8 }
+    return { title, raw, quality, headers, m3u8 }
 }
