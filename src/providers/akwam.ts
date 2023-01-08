@@ -16,11 +16,11 @@ export default class AkwamProvider implements ProviderClass {
             { "title": "Movies", "url": `${this.mainUrl}/movies` },
             { "title": "Series", "url": `${this.mainUrl}/series` }
         ].map(async json => {            
-            var request = await axios.get(json.url)
-            var $ = cheerio.load(request.data)
-            var posts = $("div[class=\"col-lg-auto col-md-4 col-6 mb-12\"]").map((index, element) => {
-                var post = $(element)
-                let titleElement = post.find("h3.entry-title > a")
+            const request = await axios.get(json.url)
+            const $ = cheerio.load(request.data)
+            const posts = $("div[class=\"col-lg-auto col-md-4 col-6 mb-12\"]").map((index, element) => {
+                const post = $(element)
+                const titleElement = post.find("h3.entry-title > a")
                 return convert.searchResponse(
                     titleElement.text(),
                     (json.title == "Movies"),
@@ -34,11 +34,11 @@ export default class AkwamProvider implements ProviderClass {
         }))
     }
     async search(query) {
-        var request = await axios.get(`${this.mainUrl}/search?q=${query.replaceAll(" ", "+")}`)
-        var $ = cheerio.load(request.data)
+        const request = await axios.get(`${this.mainUrl}/search?q=${query.replaceAll(" ", "+")}`)
+        const $ = cheerio.load(request.data)
         return $("div[class=\"widget-body row flex-wrap\"] > div").map((index, element) => {
-            var post = $(element)
-            let titleElement = post.find("h3.entry-title > a")
+            const post = $(element)
+            const titleElement = post.find("h3.entry-title > a")
             if (!/\/movie\/|\/series\//.test(titleElement.attr("href"))) return null;
             return convert.searchResponse(
                 titleElement.text(),
@@ -51,19 +51,19 @@ export default class AkwamProvider implements ProviderClass {
         }).toArray()
     }
     async load(url: string): Promise<movieInterface | seriesInterface> {
-        var request = await axios.get(url)
-        var $ = cheerio.load(request.data)
-        var title = $("h1.entry-title").text()
-        var plot = $("div.widget-body > h2 p").text()
-        var year = parseInt($("div[class=\"font-size-16 text-white mt-2\"]:contains(السنة)").text().replace(/.*:| /g, ""))
-        var posterUrl = $("picture > img.img-fluid").first().attr("src")
-        var trailer = $("a[class='btn btn-light btn-pill d-flex align-items-center']").attr("href")
+        const request = await axios.get(url)
+        const $ = cheerio.load(request.data)
+        const title = $("h1.entry-title").text()
+        const plot = $("div.widget-body > h2 p").text()
+        const year = parseInt($("div[class=\"font-size-16 text-white mt-2\"]:contains(السنة)").text().replace(/.*:| /g, ""))
+        const posterUrl = $("picture > img.img-fluid").first().attr("src")
+        const trailer = $("a[class='btn btn-light btn-pill d-flex align-items-center']").attr("href")
         if (/movie/.test(url)) {
             return convert.movieResponse(title, url, posterUrl, year, plot, trailer)
         } else {
-            var episodes = $("div.row > div[class='bg-primary2 p-4 col-lg-4 col-md-6 col-12']").map((index, element) => {
-                var episode = $(element)
-                var episodeTitleElement = episode.find("h2 > a")
+            const episodes = $("div.row > div[class='bg-primary2 p-4 col-lg-4 col-md-6 col-12']").map((index, element) => {
+                const episode = $(element)
+                const episodeTitleElement = episode.find("h2 > a")
                 return convert.Episode(
                     episodeTitleElement.text(),
                     episodeTitleElement.attr("href"),
@@ -77,13 +77,13 @@ export default class AkwamProvider implements ProviderClass {
         }
     }
     async loadLinks(data: any): Promise<Array<mediaLink>> {
-        var request = await axios.get(data)
-        var $ = cheerio.load(request.data)
-        var watchLink = new URL($("a:contains(مشاهدة).link-btn").first().attr("href"))
-        var iframeLink = this.mainUrl + watchLink.pathname + "/" + (new URL(data)).pathname.split("/")[2]
-        var iframeRequest = await axios.get(iframeLink)
+        const request = await axios.get(data)
+        let $ = cheerio.load(request.data)
+        const watchLink = new URL($("a:contains(مشاهدة).link-btn").first().attr("href"))
+        const iframeLink = this.mainUrl + watchLink.pathname + "/" + (new URL(data)).pathname.split("/")[2]
+        const iframeRequest = await axios.get(iframeLink)
         $ = cheerio.load(iframeRequest.data)
-        var sources = $("source").map((index, element) => {
+        const sources = $("source").map((index, element) => {
             return convert.mediaLink(
                 "Akwam",
                 $(element).attr("src"),
