@@ -34,7 +34,7 @@ export default class AkwamProvider implements ProviderClass {
         }))
     }
     async search(query) {
-        var request = await axios.get(`${this.mainUrl}/search?q=${query.replace(" ", "+")}`)
+        var request = await axios.get(`${this.mainUrl}/search?q=${query.replaceAll(" ", "+")}`)
         var $ = cheerio.load(request.data)
         return $("div[class=\"widget-body row flex-wrap\"] > div").map((index, element) => {
             var post = $(element)
