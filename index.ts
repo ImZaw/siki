@@ -2,7 +2,9 @@ globalThis.providers = []
 const { registerApi } = require("./src/utils/registerApi.js");
 
 const akwam = require("./src/providers/akwam").default;
+const netfilm = require("./src/providers/netfilm").default;
 
+export { loadExtractor } from "./src/utils/extractors";
 export async function attachApi(fastifyApp) {
     globalThis.app = fastifyApp;
     globalThis.app.get("/", async (request, reply) => {
@@ -22,6 +24,7 @@ export async function attachApi(fastifyApp) {
     })
     // Init providers here
     await registerApi(akwam)
+    await registerApi(netfilm)
     // ====================
     return globalThis.app
 }
@@ -62,3 +65,10 @@ export class Siki implements SikiClass {
         }
     }
 }
+// for tests
+// (async()=>{
+//     let app = await attachApi(require("fastify")());
+//     await app.listen({port: 80}, () => {
+//         console.log("Running")
+//     })
+// })()

@@ -62,7 +62,7 @@ const { attachApi } = require("siki");
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `url`      | `string` | **Required**. The url of that movie/series |
+| `data`      | `any` | **Required**. The url of that movie/series (depends on site) |
 
 #### Get video links of the movie/series episodes in a provider
 
@@ -73,3 +73,7 @@ const { attachApi } = require("siki");
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `data`      | `any` | **Required**. The url of that movie/series episode (depends on site) |
+
+
+## Warning
+This code does not provide any media data. It is designed to perform specific functions and does not include any multimedia elements such as images, audio, or video. Users should not expect to find any media files or data when using this code. If you require media data, it may need to be sourced from an external source and integrated into the code accordingly.

@@ -1,3 +1,4 @@
+import {tvTypesToWord} from "./convert";
 export function registerApi(providerClass: ProviderClass | any): boolean {
     try {
         globalThis.providers.push(providerClass)
@@ -12,6 +13,7 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
                             "name": newProviderClass.name, 
                             "language": newProviderClass.language, 
                             "url": newProviderClass.mainUrl,
+                            "tvTypes": newProviderClass.tvTypes.map(value=> ({code: value, name: tvTypesToWord(value)})),
                             "home": hostUrl + "/home"
                         }
                     })
@@ -29,7 +31,7 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
                     reply.code(200).send({
                         "status": 200,
                         "result": response.map(value => {
-                            value.posts = value.posts.map(obj => Object.assign(obj, { nextApi: hostUrl + "/load?url=" + obj.url }))
+                            value.posts = value.posts.map(obj => Object.assign(obj, { nextApi: hostUrl + "/load?data=" + obj.data }))
                             return value
                         })
                     })
@@ -49,7 +51,7 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
                     reply.code(200).send({
                         "status": 200,
                         "result": response.map(value =>
-                            Object.assign(value, { nextApi: hostUrl + "/load?url=" + value.url })
+                            Object.assign(value, { nextApi: hostUrl + "/load?data=" + value.data })
                         )
                     })
                 } catch (err) {
@@ -62,15 +64,20 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
             instance.get("/load", async (request, reply) => {
                 const hostUrl = request.protocol + '://' + request.hostname + "/" + newProviderClass.name.toLowerCase()
                 try {
-                    const url = request.query.url
-                    if (!url || url.length <= 0) throw new Error("`url` is required");
-                    new URL(url)
-                    let response = await newProviderClass.load(url)
-                    if (response.episodes != undefined) {
-                        response.episodes = response.episodes.map(value => Object.assign(value, { nextApi: hostUrl + "/loadLinks?data=" + value.url }))
+                    const data = request.query.data
+                    if (!data || data.length <= 0) throw new Error("`data` is required");
+                    let response = await newProviderClass.load(data)
+                    if (response.seasons != undefined) {
+                        response.seasons = response.seasons.map(value => {
+                            value.episodes = value.episodes.map(v=> 
+                                Object.assign(v, { nextApi: hostUrl + "/loadLinks?data=" + v.data })
+                                )
+                            return value
+                        })
                     } else {
-                        response = Object.assign(response, { nextApi: hostUrl + "/loadLinks?data=" + response.url })
+                        response = Object.assign(response, { nextApi: hostUrl + "/loadLinks?data=" + response.data })
                     }
+                    response.recommendation = response.recommendation.map(val=> Object.assign(val, { nextApi: hostUrl + "/load?data=" + val.data }))
                     reply.code(200).send({
                         "status": 200,
                         "result": response
