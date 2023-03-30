@@ -39,13 +39,12 @@ export function Episode(
     title: string,
     url: string,
     episode: number,
-    season: number,
     thumbnail: string,
     plot: string,
     type: "sub" | "dub" | "both",
     data: any,
 ): episodeInterface {
-    return { title, url, episode, season, thumbnail, plot, type, data }
+    return { title, url, episode, thumbnail, plot, type, data }
 }
 export function Season(
     season_number: number,

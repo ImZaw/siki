@@ -1,10 +1,16 @@
 globalThis.providers = []
 const { registerApi } = require("./src/utils/registerApi.js");
+const axios = require("axios");
 
 const akwam = require("./src/providers/akwam").default;
 const netfilm = require("./src/providers/netfilm").default;
+const wecima = require("./src/providers/wecima").default;
 
 export { loadExtractor } from "./src/utils/extractors";
+axios.interceptors.request.use(config => {
+    config.headers['Accept-Encoding'] = 'null';
+    return config;
+});
 export async function attachApi(fastifyApp) {
     globalThis.app = fastifyApp;
     globalThis.app.get("/", async (request, reply) => {
@@ -25,6 +31,7 @@ export async function attachApi(fastifyApp) {
     // Init providers here
     await registerApi(akwam)
     await registerApi(netfilm)
+    await registerApi(wecima)
     // ====================
     return globalThis.app
 }
@@ -66,8 +73,11 @@ export class Siki implements SikiClass {
     }
 }
 // for tests
+
 // (async()=>{
-//     let app = await attachApi(require("fastify")());
+//     let siki = new Siki("")
+//     console.log((await siki.search("Red notice")))
+//     let app = await attachApi(require("fastify")({}));
 //     await app.listen({port: 80}, () => {
 //         console.log("Running")
 //     })

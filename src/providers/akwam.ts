@@ -2,10 +2,6 @@ const axios = require("axios")
 const cheerio = require("cheerio");
 import { Cast, Episode, HomePage, Season, getImdbId, mediaLink, movieResponse, searchResponse, seriesResponse } from "../utils/convert";
 
-axios.interceptors.request.use(config => {
-    config.headers['Accept-Encoding'] = 'null';
-    return config;
-});
 export default class AkwamProvider implements ProviderClass {
     name = "Akwam";
     tvTypes = [tvTypes.MOVIE, tvTypes.SERIES, tvTypes.ANIME];
@@ -69,7 +65,6 @@ export default class AkwamProvider implements ProviderClass {
             let name = c.find(".entry-title").text()
             return Cast(name, name, c.find("img.img-fluid").attr("src"))
         }).toArray()
-        const imdbId = getImdbId($("div.mt-2:nth-child(2) > a:nth-child(1)").attr("href"))
         const rating = parseFloat($("span.mx-2").text().replace(/.*\//g, ""))
         const posterUrl = $("picture > img.img-fluid").first().attr("src")
         const trailer = $("a[class='btn btn-light btn-pill d-flex align-items-center']").attr("href")
@@ -90,6 +85,7 @@ export default class AkwamProvider implements ProviderClass {
             )
         }).toArray()
         if (/movie/.test(url)) {
+            const imdbId = getImdbId($("div.mt-2:nth-child(2) > a:nth-child(1)").attr("href"))
             return movieResponse(
                 title, 
                 url, 
@@ -115,7 +111,6 @@ export default class AkwamProvider implements ProviderClass {
                     episodeTitleElement.text(),
                     episodeTitleElement.attr("href"),
                     parseInt(episodeTitleElement.text().replace(/:.*/g, "").replace(/\D/g, '')),
-                    0,
                     episode.find("picture > img").attr("src"),
                     null,
                     null,
@@ -134,7 +129,7 @@ export default class AkwamProvider implements ProviderClass {
                 country, 
                 language, 
                 cast, 
-                imdbId, 
+                null, 
                 rating,
                 rec,
                 [Season(0, episodes.toArray())]

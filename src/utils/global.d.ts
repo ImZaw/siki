@@ -69,7 +69,6 @@ declare global {
         title: string,
         url: string,
         episode: number,
-        season: number,
         thumbnail: string,
         plot: string,
         type: "sub" | "dub" | "both",
