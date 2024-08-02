@@ -5,7 +5,7 @@ import { Cast, Episode, HomePage, Season, getImdbId, mediaLink, movieResponse, s
 export default class AkwamProvider implements ProviderClass {
     name = "Akwam";
     tvTypes = [tvTypes.MOVIE, tvTypes.SERIES, tvTypes.ANIME];
-    mainUrl = "https://akwam.cx";
+    mainUrl = "https://ak.sv";
     language = "ar";
 
     async homePage() {

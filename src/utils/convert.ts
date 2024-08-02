@@ -118,5 +118,5 @@ export function tvTypesToWord(tvType: tvTypes) {
     return types[tvType]
 }
 export function getImdbId(url) {
-    return url.match(/tt[1-9].*[1-9]/g)[0]
+    return url.match(/tt[1-9].*[1-9]/g)?.at(0)
 }

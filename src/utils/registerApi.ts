@@ -18,6 +18,7 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
                         }
                     })
                 } catch (err) {
+                    console.log(err)
                     reply.code(500).send({
                         "status": 500,
                         "message": err.message
@@ -36,6 +37,7 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
                         })
                     })
                 } catch (err) {
+                    console.log(err)
                     reply.code(500).send({
                         "status": 500,
                         "message": err.message
@@ -55,6 +57,7 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
                         )
                     })
                 } catch (err) {
+                    console.log(err)
                     reply.code(500).send({
                         "status": 500,
                         "message": err.message
@@ -83,6 +86,7 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
                         "result": response
                     })
                 } catch (err) {
+                    console.log(err)
                     reply.code(500).send({
                         "status": 500,
                         "message": err.message
@@ -99,6 +103,7 @@ export function registerApi(providerClass: ProviderClass | any): boolean {
                         "result": response
                     })
                 } catch (err) {
+                    console.log(err)
                     reply.code(500).send({
                         "status": 500,
                         "message": err.message
